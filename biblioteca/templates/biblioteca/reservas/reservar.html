@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+{% block title %} Reservar {% endblock title %}
+{% block content %}
+    {# Widget Tweaks #}
+    {% load widget_tweaks %}
+    {% load static %}
+    <div class="row">
+        <div class="col-7">
+            <div>
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Datos de la reserva</h1>
+                </div>
+            </div>
+            <div class="row no-gutters mt-2">
+                <div class="col-12">
+                    <form method="post" action="/biblioteca/reservar">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="nombre" class="txt_negrita">Nombre del usuario</label>
+                            {{ form.nombre|add_class:"form-control" }}
+                        </div>
+                        <div class="form-group">
+                            <label for="apellidos" class="txt_negrita">Apellidos del usuario</label>
+                            {{ form.apellidos|add_class:"form-control" }}
+                        </div>
+                        <div class="form-group">
+                            <label for="Identificacion" class="txt_negrita">Identificacion del usuario</label>
+                            {{ form.identificacion|add_class:"form-control" }}
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono" class="txt_negrita">Telefono del usuario</label>
+                            {{ form.telefono|add_class:"form-control" }}
+                            <input type="hidden" name="material" value="{{ material }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                        <a href="/" type="submit" class="btn btn-primary">Volver</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

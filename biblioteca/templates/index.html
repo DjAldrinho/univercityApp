@@ -1,0 +1,156 @@
+{% extends "base_generic.html" %}
+{% block content %}
+    {% load static %}
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Libros</h5>
+                    <p class="card-text">Hay una cantidad de {{ libros | length }} libros.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Tesis</h5>
+                    <p class="card-text">Hay una cantidad de {{ tesis | length }} tesis.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Revistas</h5>
+                    <p class="card-text">Hay una cantidad de {{ revistas | length }} revistas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 no-gutters">
+        <div class="col-12">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-2">
+                        <select class="form-control form-control-sm" name="categoria">
+                            <option value="">Seleccionar categoria</option>
+                            {% for c in categorias %}
+                                <option value="{{ c.id }}" {% if c.id == categoria %}selected="selected"{% endif %}>{{ c.titulo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control form-control-sm" type="text" placeholder="Codigo" name="codigo"
+                               value="{{ codigo }}">
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control form-control-sm" type="text" placeholder="Titulo" name="titulo"
+                               value="{{ titulo }}">
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-info btn-block">Filtrar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        {% if libros %}
+            <div class="col-12">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Libros</h1>
+                </div>
+            </div>
+
+            {% for libro in libros %}
+                <div class="col-4">
+                    <div class="media">
+                        <img src="{% static 'uploads/' %}{{ libro.portada }}" alt="{{ libro.titulo }}"
+                             class="align-self-center mr-3 img-fluid" style="max-width: 150px">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{ libro.titulo }}</h5>
+                            <p>{{ libro.descripcion }}</p>
+                            <p>Categoria: {{ libro.categoria }}</p>
+                            <p>Editorial: {{ libro.editorial }}</p>
+                            <p>Publicado: {{ libro.fecha_publicacion }}</p>
+                            <p>
+                                <a class="btn btn-primary" href="/biblioteca/detalle/libro/{{ libro.id }}"
+                                   role="button">Ver Informacion</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="row">
+        {% if tesis %}
+            <div class="col-12">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Tesis</h1>
+                </div>
+            </div>
+
+            {% for tes in tesis %}
+                <div class="col-4">
+                    <div class="media">
+                        <img src="{% static 'uploads/' %}{{ tes.portada }}" alt="{{ tesis.titulo }}"
+                             class="align-self-center mr-3 img-fluid" style="max-width: 150px">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{ tes.titulo }}</h5>
+                            <p>{{ tes.descripcion }}</p>
+                            <p>Categoria: {{ tes.categoria }}</p>
+                            <p>Editorial: {{ tes.editorial }}</p>
+                            <p>Publicado: {{ tes.fecha_publicacion }}</p>
+                            <p>
+                                <a class="btn btn-primary" href="/biblioteca/detalle/tesis/{{ tes.id }}" role="button">Ver
+                                    Informacion</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="row">
+        {% if revistas %}
+            <div class="col-12">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Revistas</h1>
+                </div>
+            </div>
+
+            {% for revista in revistas %}
+                <div class="col-4">
+                    <div class="media">
+                        <img src="{% static 'uploads/' %}{{ revista.portada }}" alt="{{ revista.titulo }}"
+                             class="align-self-center mr-3 img-fluid" style="max-width: 150px">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{ revista.titulo }}</h5>
+                            <p>{{ revista.descripcion }}</p>
+                            <p>Categoria: {{ revista.categoria }}</p>
+                            <p>Editorial: {{ revista.editorial }}</p>
+                            <p>Publicado: {{ revista.fecha_publicacion }}</p>
+                            <p>
+                                <a class="btn btn-primary" href="/biblioteca/detalle/revista/{{ revista.id }}"
+                                   role="button">Ver Informacion</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

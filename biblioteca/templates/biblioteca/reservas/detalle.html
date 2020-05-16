@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+{% block title %} Información del recurso {% endblock title %}
+{% block content %}
+    {% load static %}
+    {% load widget_tweaks %}
+    <div class="row">
+        <div class="col-7">
+            <h1 class="h2">Información del recurso</h1>
+            <div class="row no-gutters mt-2">
+                <div class="col-8">
+                    <div class="media">
+                        <img src="{% static 'uploads/' %}{{ model.portada }}" alt="{{ model.titulo }}"
+                             class="align-self-center mr-3 img-fluid" style="max-width: 250px">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{ model.titulo }}</h5>
+                            <p style="font-style: italic">{{ model.descripcion }}</p>
+                            <p>Categoria: {{ model.categoria }}</p>
+                            <p>Editorial: {{ model.editorial }}</p>
+                            <p>Publicado: {{ model.fecha_publicacion }}</p>
+                            <p>Autor:
+                            <ul>
+                                {% for autor in model.autores.all %}
+                                    <li>{{ autor }}</li>
+                                {% endfor %}
+                            </ul>
+                            </p>
+                            <p>
+                                Ubicacion: Seccion: {{ model.bloque.seccion }} - Bloque: {{ model.bloque }} -
+                                #{{ model.numero_bloque }}
+                            </p>
+                            <p>Disponibles: {{ model.cantidad }}</p>
+                            {% if model.cantidad > 0 %}
+                                <form method="post" action="/biblioteca/reservar">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="material" value="{{ model.id }}">
+                                     <input type="hidden" name="usuario" value="{{ request.session.id_cliente }}">
+
+                                    <button type="submit" class="btn btn-primary">Reservar</button>
+                                    <a href="{% url 'index' %}" type="submit" class="btn btn-primary">Volver</a>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
